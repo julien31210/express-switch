@@ -28,6 +28,25 @@ app.post("/post", function(req, res){
 	})
 })
 
+app.post('/', function(req, res){
+	var file = path.join(__dirname + '../data/blog.json')
+	fs.readFile(file, 'utf8', function(err, data){
+		if(err){
+			console.log(err);
+		}
+		var doc = JSON.parse(data);
+		doc.blog.push(req.body);
+		var stringDoc = JSON.stringify(doc, null, 2);
+		fs.writeFile(file, stringDoc, function(err){
+			if(err){
+				console.log(err);
+			}
+		});
+});
+
+	res.redirect('/');
+});
+
 app.listen(1337, function(){
 	console.log("coucou")
 })

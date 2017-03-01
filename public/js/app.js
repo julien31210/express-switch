@@ -7,7 +7,7 @@ $(document).ready(function(){
 			var articles = data.blogs;
 			for(i=0; i<articles.length; i++){
 				$('#receiver')
-				.append(articles[i].id+"<hr>"+articles[i].title+"<hr>"+articles[i].content+"<hr>");
+				.append(articles[i].id+"<br>"+articles[i].title+"<br>"+articles[i].content+"<br>");
 			}
 		},
 		error: function(err){
