@@ -19,33 +19,27 @@ app.get("/data", function(req, res){
 });
 
 app.post("/post", function(req, res){
-	fs.readFile(linkjson, "utf8", function(err, data){
+	fs.readFile("./data/blog.json", "utf8", function(err, data){
 		if(err){
 			throw err;
 		}
 		var dataparsed = JSON.parse(data);
-		dataparsed.blogs.push(req.body);
+		var len = dataparsed.blogs.length
+		dataparsed.blogs.push({id: len + 1, title: req.body.title, content:req.body.content});
+		var newarticle = JSON.stringify(dataparsed, null, 2);
+
+		fs.writeFile("./data/blog.json", newarticle, function(err){
+			console.log(err);
+		})
 	})
+	res.redirect('/');
+
+});
+
+app.get("/edit/:id", function(req, res){
+	res.sendFile(path.join(__dirname+"/public/edit.html"), {id: req.param.id});
 })
 
-app.post('/', function(req, res){
-	var file = path.join(__dirname + '../data/blog.json')
-	fs.readFile(file, 'utf8', function(err, data){
-		if(err){
-			console.log(err);
-		}
-		var doc = JSON.parse(data);
-		doc.blog.push(req.body);
-		var stringDoc = JSON.stringify(doc, null, 2);
-		fs.writeFile(file, stringDoc, function(err){
-			if(err){
-				console.log(err);
-			}
-		});
-});
-
-	res.redirect('/');
-});
 
 app.listen(1337, function(){
 	console.log("coucou")
